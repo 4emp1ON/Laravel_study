@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\News;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    public $news = [
+    public $newsList = [
         "categories" => [
             "Hi Tech" => [
-                'name' => "Hi Tech",
                 'content' => [
                     1 => [
                         'title' => 'New processor produced',
@@ -26,7 +25,6 @@ class NewsController extends Controller
                     ]
                 ]],
             "Business" => [
-                'name' => "Business",
                 'content' => [
                     3 => [
                         'title' => 'New business issues',
@@ -46,23 +44,26 @@ class NewsController extends Controller
 
     public function index()
     {
-        return view('news')->with('news', $this->news);
+        return view('news.index')->with([
+            'newsList' => $this->newsList,
+            'categories' => array_keys($this->newsList['categories'])]);
     }
 
     public function newsCategories($category)
     {
-        return view('newsCategories')->with('news', $this->news['categories'][$category]);
+        return view('newsCategories')->with('news', $this->newsList['categories'][$category]);
     }
 
-    public function newsOne($category, $id)
+    public function show($id)
     {
-        return view('oneNew')->with('news', $this->news['categories'][$category]['content'][$id]);
+        $category = request()->input('category');
+        return view('news.oneNew')->with('news', $this->newsList['categories'][$category]['content'][$id]);
     }
 
     public function categories()
     {
         $html = '';
-        foreach ($this->news['categories'] as $category) {
+        foreach ($this->newsList['categories'] as $category) {
             $html .= "<a href='/news/" . $category['name'] . "'><h2>" . $category['name'] . "</h2></a>";
         }
         return $html;
@@ -70,7 +71,7 @@ class NewsController extends Controller
 
     public function addForm()
     {
-        return view('addNews')->with('news', $this->news['categories']);
+        return view('addNews')->with('news', $this->newsList['categories']);
     }
 
     public function add()
@@ -86,7 +87,7 @@ class NewsController extends Controller
         ]);
 
         \request()->session()->start();
-        \request()->session()->push('news', $this->news);
+        \request()->session()->push('news', $this->newsList);
         return redirect()->route('news.news');
     }
 }

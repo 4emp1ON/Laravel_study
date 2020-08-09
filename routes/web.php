@@ -13,23 +13,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', 'NewsController@index');
+Route::get('/news/{id}', 'NewsController@show')
+    ->where('id', '\d+')
+    ->name('news.show');
+//for admin
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('/', 'Admin\IndexController@index')
+        ->name('admin');
+    Route::get('/news', 'Admin\NewsController@index')
+        ->name('admin.news');
+    Route::get('/news/create', 'Admin\NewsController@create')
+        ->name('admin.news.create');
+    Route::get('/news/{id}/edit', 'Admin\NewsController@edit')
+        ->where('id', '\d+')
+        ->name('admin.news.edit');
+});
+
+
 Auth::routes();
-
-Route::get('/', 'HomeController@index')->name('home');
-
-Route::group([
-    "prefix" => "news",
-    "namespace" => "News",
-    "as" => "news."
-],
-    function () {
-    Route::get("/", "NewsController@index")->name('news');
-    Route::get("/categories", "NewsController@categories")->name('categories');
-    Route::get("/add", ["uses" => "NewsController@addForm"]);
-    Route::post("/addAction", ["uses" => "NewsController@add"]);
-    Route::get("/{category}/{id}", ["uses" => "NewsController@newsOne"]);
-    Route::get("/{category}", ["uses" => "NewsController@newsCategories"]);
-    }
-);
-Route::get('/authentication', ['uses' => "AuthController@index"]);
-
+Route::get('/home', 'HomeController@index')->name('home');

@@ -1,7 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.index')
 
 @section('content')
-    <div class="container-xl">
+    <div class="blog-post">
+
         <h1>{{ $news['title'] }}</h1>
         <div>
             <p>{{ $news['body'] }}</p>
@@ -9,5 +10,4 @@
             <p>Date: {{$news['date']}}</p>
         </div>
     </div>
-    </div>
-@endsection
+@stop
