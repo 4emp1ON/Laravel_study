@@ -13,10 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'NewsController@index');
+Route::get('/', 'NewsController@index')
+    ->name('home');
 Route::get('/news/{id}', 'NewsController@show')
     ->where('id', '\d+')
     ->name('news.show');
+Route::get('/news/{id}/getComments', 'NewsController@getComments')
+    ->where('id', '\d+')
+    ->name('news.getComment');
+Route::post('/news/{id}/addComment', 'NewsController@addComment')
+    ->where('id', '\d+')
+    ->name('news.addComment');
+
 //for admin
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', 'Admin\IndexController@index')
@@ -30,6 +38,7 @@ Route::group(['prefix' => 'admin'], function () {
         ->name('admin.news.edit');
 });
 
+Route::match(['post', 'get'], '/dataLandingForm', 'DataLandingController@index')
+    ->name('dataLandingForm');
 
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');

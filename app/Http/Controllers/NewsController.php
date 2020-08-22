@@ -57,7 +57,12 @@ class NewsController extends Controller
     public function show($id)
     {
         $category = request()->input('category');
-        return view('news.oneNew')->with('news', $this->newsList['categories'][$category]['content'][$id]);
+        return view('news.oneNew')->with([
+            'id' => $id,
+            'news' => $this->newsList['categories'][$category]['content'][$id],
+            'categories' => array_keys($this->newsList['categories']),
+            'comments' => $this->getComments($id),
+        ]);
     }
 
     public function categories()
@@ -79,7 +84,7 @@ class NewsController extends Controller
         $categoryName = \request()->post('categoryName');
         $postTitle = \request()->post('newsHeader');
         $postBody = \request()->post('newsBody');
-        array_push($this->news['categories'][$categoryName]['content'], [
+        array_push($this->newsList['categories'][$categoryName]['content'], [
             "title" => $postTitle,
             "body" => $postBody,
             "author" => "Ben",
@@ -89,5 +94,46 @@ class NewsController extends Controller
         \request()->session()->start();
         \request()->session()->push('news', $this->newsList);
         return redirect()->route('news.news');
+    }
+
+    public function getComments($id)
+    {
+        $fileComments = storage_path('app/comments.json');
+        if (file_exists($fileComments)) {
+            $commentsSource = file_get_contents($fileComments);
+            $comments = json_decode($commentsSource, true);
+            $currentPostComments = $comments[$id] ?? '';
+        }
+        return response()->json($currentPostComments ?? '');
+    }
+
+    public function addComment(Request $request, $id)
+    {
+        if ($request->isMethod('POST')) {
+            $fileComments = storage_path('app/comments.json');
+            $commentsSource = file_get_contents($fileComments);
+            $comments = json_decode($commentsSource, true);
+            if (array_key_exists($id, $comments)) {
+                $lastPostId = end($comments[$id])['id'];
+            }
+            else {
+                $lastPostId = 0;
+                $comments[$id] = [];
+            }
+
+            $newComment = [
+                'id' => $lastPostId + 1,
+                'author' => $request->input('author'),
+                'date' => date("d.m.Y"),
+                'content' => $request->input('comment'),
+            ];
+            array_push($comments[$id], $newComment);
+            $jsonData = json_encode($comments);
+            file_put_contents($fileComments, $jsonData);
+
+        } else {
+            $request->flash(['message' => 'ONLY GET METHOD']);
+        }
+        return back()->withInput();
     }
 }

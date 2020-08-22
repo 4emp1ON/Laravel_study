@@ -10,13 +10,10 @@
 
 
     <!-- Bootstrap core CSS -->
-    <script type="text/javascript" nonce="ce893b6a42014e0fa1d2c021b5a"
-            src="//local.adguard.org?ts=1596997896790&amp;type=content-script&amp;dmn=bootstrap-4.ru&amp;app=com.google.Chrome&amp;css=1&amp;js=1&amp;gcss=1&amp;rel=1&amp;rji=1&amp;sbe=0"></script>
-    <script type="text/javascript" nonce="ce893b6a42014e0fa1d2c021b5a"
-            src="//local.adguard.org?ts=1596997896790&amp;name=AdGuard%20Extra%20Beta&amp;type=user-script"></script>
-    <link href="/docs/4.5/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <script src=" {{asset('js/app.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">    <script src=" {{asset('js/app.js')}}"></script>
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="/docs/4.5/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
     <link rel="icon" href="/docs/4.5/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
@@ -61,7 +58,7 @@
                 <a class="text-muted" href="#">Subscribe</a>
             </div>
             <div class="col-4 text-center">
-                <a class="blog-header-logo text-dark" href="#">Large</a>
+                <a class="blog-header-logo text-dark" href="{{route('home')}}">Large</a>
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center">
                 <a class="text-muted" href="#" aria-label="Search">
@@ -91,6 +88,7 @@
     </main><!-- /.container -->
 
     <x-footer></x-footer>
+    @yield('js')
 </div>
 </body>
 </html>
