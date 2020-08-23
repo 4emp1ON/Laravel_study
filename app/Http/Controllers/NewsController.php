@@ -3,80 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    public $newsList = [
-        "categories" => [
-            "Hi Tech" => [
-                'content' => [
-                    1 => [
-                        'title' => 'New processor produced',
-                        'body' => 'New processor is much more better then previous and this is great',
-                        'author' => 'Ben',
-                        'date' => '03.07.2020'
-                    ],
-                    2 => [
-                        'title' => 'New processor produced again',
-                        'body' => 'New processor again becomes much more better then previous and this is great',
-                        'author' => 'Ben',
-                        'date' => '04.07.2020'
-                    ]
-                ]],
-            "Business" => [
-                'content' => [
-                    3 => [
-                        'title' => 'New business issues',
-                        'body' => 'One clever men generate new business issues and it works ',
-                        'author' => 'Ben',
-                        'date' => '03.07.2020'
-                    ],
-                    4 => [
-                        'title' => 'New! business issues',
-                        'body' => 'Another one clever men generate new business issues and it works again',
-                        'author' => 'Ben',
-                        'date' => '04.07.2020'
-                    ]
-                ]
-            ]]
-    ];
 
     public function index()
     {
+        $news = (new News())->getAll();
         return view('news.index')->with([
-            'newsList' => $this->newsList,
-            'categories' => array_keys($this->newsList['categories'])]);
-    }
-
-    public function newsCategories($category)
-    {
-        return view('newsCategories')->with('news', $this->newsList['categories'][$category]);
+            'news' => $news
+        ]);
     }
 
     public function show($id)
     {
+        $news = (new News())->getById($id);
         $category = request()->input('category');
         return view('news.oneNew')->with([
-            'id' => $id,
-            'news' => $this->newsList['categories'][$category]['content'][$id],
-            'categories' => array_keys($this->newsList['categories']),
+            'news' => $news,
             'comments' => $this->getComments($id),
         ]);
     }
 
-    public function categories()
-    {
-        $html = '';
-        foreach ($this->newsList['categories'] as $category) {
-            $html .= "<a href='/news/" . $category['name'] . "'><h2>" . $category['name'] . "</h2></a>";
-        }
-        return $html;
-    }
-
     public function addForm()
     {
-        return view('addNews')->with('news', $this->newsList['categories']);
+        return view('addNews');
     }
 
     public function add()

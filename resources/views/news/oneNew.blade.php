@@ -3,11 +3,11 @@
 @section('content')
     <div class="blog-post">
 
-        <h1>{{ $news['title'] }}</h1>
+        <h1>{{ ucfirst($news->title) }}</h1>
         <div>
-            <p>{{ $news['body'] }}</p>
-            <p>Author: {{$news['author']}}</p>
-            <p>Date: {{$news['date']}}</p>
+            <p>{{ $news->body }}</p>
+            <p>Author: {{$news->author}}</p>
+            <p>Date: 12.05.2020</p>
         </div>
     </div>
     <div id="comments">
@@ -16,7 +16,7 @@
     <div class="add_comments">
         <h2 class="p-2">Добавить комментарий</h2>
         <form class="needs-validation" novalidate method="POST"
-              action="{!!  route('news.addComment', ['id' => $id]) !!}">
+              action="{!!  route('news.addComment', ['id' => $news->id]) !!}">
             @csrf
             <div class="form-row">
                 <div class="col-md-6 mb-3">
@@ -71,7 +71,7 @@
             return html;
         }
 
-        getComments({!! $id !!});
+        getComments({!! $news->id !!});
 
 
         // Form validation via bootstrap

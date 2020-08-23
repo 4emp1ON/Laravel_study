@@ -25,6 +25,10 @@ Route::post('/news/{id}/addComment', 'NewsController@addComment')
     ->where('id', '\d+')
     ->name('news.addComment');
 
+Route::get('/news/category/{id}', 'CategoriesController@oneCategory')
+    ->where('id', '\d+')
+    ->name('categories.category');
+
 //for admin
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', 'Admin\IndexController@index')
