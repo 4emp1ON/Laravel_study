@@ -1,7 +1,7 @@
 <?php
 if (!function_exists('getCategories')) {
-    function getCategories() :array
+    function getCategories()
     {
-        return (new \App\Models\Category())->getAll();
+        return \App\Models\Category::all();
     }
 }

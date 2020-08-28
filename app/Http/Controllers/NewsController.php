@@ -11,7 +11,7 @@ class NewsController extends Controller
 
     public function index()
     {
-        $news = (new News())->getAll();
+        $news = News::paginate(5);
         return view('news.index')->with([
             'news' => $news
         ]);
@@ -19,7 +19,7 @@ class NewsController extends Controller
 
     public function show($id)
     {
-        $news = (new News())->getById($id);
+        $news = News::find($id);
         $category = request()->input('category');
         return view('news.oneNew')->with([
             'news' => $news,

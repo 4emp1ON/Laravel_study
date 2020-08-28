@@ -17,7 +17,7 @@ Route::get('/', 'NewsController@index')
     ->name('home');
 Route::get('/news/{id}', 'NewsController@show')
     ->where('id', '\d+')
-    ->name('news.show');
+    ->name('news');
 Route::get('/news/{id}/getComments', 'NewsController@getComments')
     ->where('id', '\d+')
     ->name('news.getComment');
@@ -25,21 +25,14 @@ Route::post('/news/{id}/addComment', 'NewsController@addComment')
     ->where('id', '\d+')
     ->name('news.addComment');
 
-Route::get('/news/category/{id}', 'CategoriesController@oneCategory')
-    ->where('id', '\d+')
-    ->name('categories.category');
+Route::get('/news/category/{category}', 'CategoriesController@show')
+    ->name('category.show');
 
 //for admin
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('/', 'Admin\IndexController@index')
+    Route::get('/', 'Admin\NewsController@index')
         ->name('admin');
-    Route::get('/news', 'Admin\NewsController@index')
-        ->name('admin.news');
-    Route::get('/news/create', 'Admin\NewsController@create')
-        ->name('admin.news.create');
-    Route::get('/news/{id}/edit', 'Admin\NewsController@edit')
-        ->where('id', '\d+')
-        ->name('admin.news.edit');
+    Route::resource('/news', 'Admin\NewsController');
 });
 
 Route::match(['post', 'get'], '/dataLandingForm', 'DataLandingController@index')

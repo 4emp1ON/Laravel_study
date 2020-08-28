@@ -3,20 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use SebastianBergmann\CodeCoverage\TestFixture\C;
 
 class News extends Model
 {
     protected $table = 'news';
+    protected $primaryKey = 'id';
+    protected $fillable = ['author', 'title', 'body'];
 
-    public function getAll() {
-        return \DB::select("SELECT id, title, author, body, category_id FROM news");
+    public function categories() {
+        return $this->belongsTo(Category::class);
     }
 
-    public function getById(int $id) {
-        return \DB::selectOne("SELECT id, title, author, body, category_id FROM news where id= :id", [
-            'id' => $id
-        ]);
-    }
     public function getByCategory(int $id) {
         return \DB::select("
             SELECT n.id, n.title, n.author, n.body, c.name
