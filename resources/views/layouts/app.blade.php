@@ -25,22 +25,13 @@
     <div class="container">
         <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
-                <a class="nav-link active" href="/">Hello page</a>
+                <a class="nav-link active" href="{{ route('admin') }}">Hello page</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/news/categories">News categories</a>
+                <a class="nav-link" href="{{ route('login') }}">Auth page</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/news/Hi%20Tech">Hi Tech category News</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/news/Hi%20Tech/1">Show me one News</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/authentication">Auth page</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/news/add">Add news</a>
+                <a class="nav-link" href="{{ route('news.create') }}">Add news</a>
             </li>
         </ul>
     </div>

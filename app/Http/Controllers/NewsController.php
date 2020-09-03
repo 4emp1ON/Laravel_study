@@ -32,23 +32,6 @@ class NewsController extends Controller
         return view('addNews');
     }
 
-    public function add()
-    {
-        $categoryName = \request()->post('categoryName');
-        $postTitle = \request()->post('newsHeader');
-        $postBody = \request()->post('newsBody');
-        array_push($this->newsList['categories'][$categoryName]['content'], [
-            "title" => $postTitle,
-            "body" => $postBody,
-            "author" => "Ben",
-            "date" => date("m.d.Y")
-        ]);
-
-        \request()->session()->start();
-        \request()->session()->push('news', $this->newsList);
-        return redirect()->route('news.news');
-    }
-
     public function getComments($id)
     {
         $fileComments = storage_path('app/comments.json');

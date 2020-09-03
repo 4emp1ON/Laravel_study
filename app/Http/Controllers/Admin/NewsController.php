@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewsCreateRequest;
 use App\Models\News;
 use Illuminate\Http\Request;
 
@@ -36,12 +37,12 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(NewsCreateRequest $request)
     {
-        $data = $request->only(['author', 'title', 'body']);
+        $data = $request->validated();
         $news = News::create($data);
         if ($news) {
-            return redirect()->route('news.index')->with('success', 'Новость успешно добавлена');
+            return redirect()->route('news.index')->with('success', trans('messages.admin.news.store.success'));
         }
         return back();
     }
@@ -75,14 +76,14 @@ class NewsController extends Controller
      * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(NewsCreateRequest $request, News $news)
     {
         $news->author = $request->input('author');
         $news->title = $request->input('title');
         $news->body = $request->input('body');
 
         if($news->save()) {
-            return redirect()->route('news.index')->with('success', 'Новость успешно обновлена');
+            return redirect()->route('news.index')->with('success', __('messages.admin.news.update.success'));
         }
         return back();
     }
@@ -90,11 +91,18 @@ class NewsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\News  $news
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\News $news
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy(News $news)
     {
-        //
+        if(!\request()->isMethod('DELETE')){
+            return redirect()->route('news.index')->with('success', __('messages.admin.news.delete.wrong_method'));
+        }
+        if ($news->delete()) {
+            return redirect()->route('news.index')->with('success', __('messages.admin.news.delete.success'));
+        }
+        dd($news);
     }
 }
